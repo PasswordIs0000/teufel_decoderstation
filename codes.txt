@@ -1,0 +1,36 @@
+Decoded NEC 32 bits
+
+Power				0x807F50AF
+Mute				0x807FD02F
+
+5.1					0x807F708F
+Optical 1			0x807F609F
+Optical 2			0x807FF00F
+Coaxial 1			0x807F48B7
+Coaxial 1			0x807FE01F
+TV					0x807FC837
+CD					0x807F6897
+Aux					0x807F40BF
+Display				0x807FE817
+
+Return				0x807FC03F
+
+Mode				0x807FE21D
+Speaker				0x807F629D
+Test				0x807FA25D
+
+Up / Vol Up			0x807F7A85
+Left				0x807FDA25
+OK					0x807F5AA5
+Right				0x807F1AE5
+Down / Vol Down		0x807F6A95
+
+Front L.			0x807FCA35
+Center				0x807F4AB5
+Front R.			0x807F8A75
+Side L.				0x807FF20D
+Subwoofer			0x807F728D
+Side R.				0x807FB24D
+
+After 108m sec		RAW: 8900, 2200, 550 on 38kHz
+Repat with break of 95m sec
