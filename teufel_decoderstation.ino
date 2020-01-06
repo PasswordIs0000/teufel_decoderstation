@@ -163,7 +163,7 @@ void web_mute(EasyWebServer& ews) {
     // easy web server doesn't send a newline
     Serial.println("");
 
-    // send IR command to increase the volume
+    // send IR command to mute
     Serial.println("IR mute!");
     irsend.sendNEC(0x807FD02F, 32);
 
