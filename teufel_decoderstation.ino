@@ -24,7 +24,7 @@ const unsigned int irRepeat[] = {8900, 2200, 550};
 Bounce debouncer = Bounce();
 
 // ethernet configuration
-byte mac_address[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+byte mac_address[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}; // think i'll use 0xDEADBEEF and count upwards in the last byte...
 IPAddress ip_address(192, 168, 178, 3);
 
 // listen on tcp port 80
@@ -94,81 +94,126 @@ void ir_dump(decode_results *results) {
 }
 
 void web_root(EasyWebServer& ews) {
+    // send the answer
     ews.client.println(F("<!DOCTYPE HTML>"));
     ews.client.println(F("<html><head><title>Teufel Decoderstation 5 Remote</title></head><body>"));
     ews.client.println(F("<p>Teufel Decoderstation 5 Remote:</p>"));
-    ews.client.println(F("<p><a href='/repeat3'>Repeat 3 Times</a></p>"));
-    ews.client.println(F("<p><a href='/repeat10'>Repeat 10 Times</a></p>"));
-    ews.client.println(F("<p><a href='/vol_decr'>Decrease Volume</a></p>"));
-    ews.client.println(F("<p><a href='/vol_incr'>Increase Volume</a></p>"));
+    ews.client.println(F("<p><a href='/vol_incr3'>Increase Volume 3x</a></p>"));
+    ews.client.println(F("<p><a href='/vol_incr7'>Increase Volume 7x</a></p>"));
+    ews.client.println(F("<p><a href='/vol_decr3'>Decrease Volume 3x</a></p>"));
+    ews.client.println(F("<p><a href='/vol_decr7'>Decrease Volume 7x</a></p>"));
     ews.client.println(F("<p><a href='/mute'>Mute/Unmute</a></p>"));
+    ews.client.println(F("<p><a href='/power'>Power On/Off</a></p>"));
     ews.client.println(F("</body></html>"));
+    
+    // close the client connection
+    // prevents that the client shows an error while the arduino is sending the IR signal(s)
+    ews.client.flush();
+    ews.client.stop();
 }
 
-void web_repeat3(EasyWebServer& ews) {
+void web_vol_decr3(EasyWebServer& ews) {
     // easy web server doesn't send a newline
     Serial.println("");
-
-    // send the repeat signal
-    for (int i = 0; i < 3; ++i) {
-        Serial.println("IR Repeat!");
-        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
-        delay(95); // delay the IR repeat signal
-    }
 
     // show the root page
     web_root(ews);
-}
-
-void web_repeat10(EasyWebServer& ews) {
-    // easy web server doesn't send a newline
-    Serial.println("");
-
-    // send the repeat signal
-    for (int i = 0; i < 10; ++i) {
-        Serial.println("IR Repeat!");
-        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
-        delay(95); // delay the IR repeat signal
-    }
-
-    // show the root page
-    web_root(ews);
-}
-
-void web_vol_decr(EasyWebServer& ews) {
-    // easy web server doesn't send a newline
-    Serial.println("");
 
     // send IR command to decrease the volume
-    Serial.println("IR volume decrease!");
+    Serial.println("IR volume decrease! (3x)");
     irsend.sendNEC(0x807F6A95, 32);
-
-    // show the root page
-    web_root(ews);
+    delay(108); // delay the IR repeat signal
+    
+    // send the repeat signal
+    for (int i = 0; i < 6; ++i) { // 3 more than requested delta
+        Serial.println("IR Repeat!");
+        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
+        delay(95); // delay the IR repeat signal
+    }
 }
 
-void web_vol_incr(EasyWebServer& ews) {
+void web_vol_decr7(EasyWebServer& ews) {
     // easy web server doesn't send a newline
     Serial.println("");
 
-    // send IR command to increase the volume
-    Serial.println("IR volume increase!");
-    irsend.sendNEC(0x807F7A85, 32);
+    // show the root page
+    web_root(ews);
+
+    // send IR command to decrease the volume
+    Serial.println("IR volume decrease! (7x)");
+    irsend.sendNEC(0x807F6A95, 32);
+    delay(108); // delay the IR repeat signal
+    
+    // send the repeat signal
+    for (int i = 0; i < 10; ++i) { // 3 more than requested delta
+        Serial.println("IR Repeat!");
+        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
+        delay(95); // delay the IR repeat signal
+    }
+}
+
+void web_vol_incr3(EasyWebServer& ews) {
+    // easy web server doesn't send a newline
+    Serial.println("");
 
     // show the root page
     web_root(ews);
+
+    // send IR command to increase the volume
+    Serial.println("IR volume increase! (3x)");
+    irsend.sendNEC(0x807F7A85, 32);
+    delay(108); // delay the IR repeat signal
+    
+    // send the repeat signal
+    for (int i = 0; i < 6; ++i) { // 3 more than requested delta
+        Serial.println("IR Repeat!");
+        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
+        delay(95); // delay the IR repeat signal
+    }
+}
+
+void web_vol_incr7(EasyWebServer& ews) {
+    // easy web server doesn't send a newline
+    Serial.println("");
+
+    // show the root page
+    web_root(ews);
+
+    // send IR command to increase the volume
+    Serial.println("IR volume increase! (7x)");
+    irsend.sendNEC(0x807F7A85, 32);
+    delay(108); // delay the IR repeat signal
+    
+    // send the repeat signal
+    for (int i = 0; i < 10; ++i) { // 3 more than requested delta
+        Serial.println("IR Repeat!");
+        irsend.sendRaw(irRepeat, sizeof(irRepeat) / sizeof(irRepeat[0]), IR_KHZ);
+        delay(95); // delay the IR repeat signal
+    }
 }
 
 void web_mute(EasyWebServer& ews) {
     // easy web server doesn't send a newline
     Serial.println("");
 
+    // show the root page
+    web_root(ews);
+
     // send IR command to mute
     Serial.println("IR mute!");
     irsend.sendNEC(0x807FD02F, 32);
+}
+
+void web_power(EasyWebServer& ews) {
+    // easy web server doesn't send a newline
+    Serial.println("");
 
     // show the root page
     web_root(ews);
+
+    // send IR command to mute
+    Serial.println("IR power!");
+    irsend.sendNEC(0x807F50AF, 32);
 }
 
 void setup() {
@@ -242,7 +287,7 @@ void loop() {
         Serial.println("Transition to STATE_REPEAT.");
         curState = STATE_REPEAT;
         lastInteraction = cur_time;
-        delay(95);  // delay the IR repeat signal
+        delay(108);  // delay the IR repeat signal
     }
 
     // send the repeat signal or restart the key press counting
@@ -272,10 +317,11 @@ void loop() {
         Serial.println("New HTTP client.");
         EasyWebServer ews(client);
         ews.serveUrl("/", web_root);
-        ews.serveUrl("/repeat3", web_repeat3);
-        ews.serveUrl("/repeat10", web_repeat10);
-        ews.serveUrl("/vol_decr", web_vol_decr);
-        ews.serveUrl("/vol_incr", web_vol_incr);
+        ews.serveUrl("/vol_decr3", web_vol_decr3);
+        ews.serveUrl("/vol_decr7", web_vol_decr7);
+        ews.serveUrl("/vol_incr3", web_vol_incr3);
+        ews.serveUrl("/vol_incr7", web_vol_incr7);
         ews.serveUrl("/mute", web_mute);
+        ews.serveUrl("/power", web_power);
     }
 }
