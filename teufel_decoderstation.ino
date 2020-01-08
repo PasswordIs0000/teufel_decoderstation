@@ -97,13 +97,13 @@ void web_root(EasyWebServer& ews) {
     // send the answer
     ews.client.println(F("<!DOCTYPE HTML>"));
     ews.client.println(F("<html><head><title>Teufel Decoderstation 5 Remote</title></head><body>"));
-    ews.client.println(F("<p>Teufel Decoderstation 5 Remote:</p>"));
-    ews.client.println(F("<p><a href='/vol_incr3'>Increase Volume 3x</a></p>"));
-    ews.client.println(F("<p><a href='/vol_incr7'>Increase Volume 7x</a></p>"));
-    ews.client.println(F("<p><a href='/vol_decr3'>Decrease Volume 3x</a></p>"));
-    ews.client.println(F("<p><a href='/vol_decr7'>Decrease Volume 7x</a></p>"));
-    ews.client.println(F("<p><a href='/mute'>Mute/Unmute</a></p>"));
-    ews.client.println(F("<p><a href='/power'>Power On/Off</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'>Teufel Decoderstation 5 Remote</p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/vol_incr7'>Increase Volume 7x</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/vol_incr3'>Increase Volume 3x</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/vol_decr3'>Decrease Volume 3x</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/vol_decr7'>Decrease Volume 7x</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/mute'>Mute/Unmute</a></p>"));
+    ews.client.println(F("<p style='font-size:48px;'><a href='/power'>Power On/Off</a></p>"));
     ews.client.println(F("</body></html>"));
     
     // close the client connection
